@@ -60,6 +60,14 @@ export const initializeDesktopApp = callOnce(() => {
     ipcRenderer.send('checkVersion')
     console.log('Electron found')
 
+    Reflector_IPC_window.options= {
+      logr : {
+        Reflector_IPC_window : 1,
+        CXNS : 1,
+        REFL : 1
+      }
+    }
+
     // IPSME: reflector ipc <-> bc
     const reflector_IPC_window_ = new Reflector_IPC_window(window);
     reflector_IPC_window_.subscribe();
