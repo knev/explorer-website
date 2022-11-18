@@ -2,7 +2,7 @@ import { setDownloadNewVersion, setDownloadProgress, setDownloadReady, setKernel
 import { store } from '../state/redux'
 import { callOnce } from '../utils/callOnce'
 import { getCurrentPosition, hasRecentlyLoggedIn, isMobile } from './browser'
-import { Reflector_IPC_window, /* l as reflector_l */ } from '@ipsme/reflector-electron-ipc-window'
+import { Reflector_IPC_window, l as reflector_l } from '@ipsme/reflector-electron-ipc-window'
 import * as sharedworker_reflector from '@ipsme/reflector-ws-client';
 
 export const isElectron = callOnce((): boolean => {
@@ -74,10 +74,18 @@ export const initializeDesktopApp = callOnce(() => {
     reflector_IPC_window_.subscribe();
   }
   else {
-    // IPSME: reflector bc <-> ws
-    sharedworker_reflector.config.options = {
-      rws: { maxRetries: 20, debug: true }
+    sharedworker_reflector.config.options= {
+      rws: {
+        maxRetries: 20, 
+        debug:true
+      },
+      logr: {
+        CXNS : 1,
+        REFL : 1,
+      }
     }
+
+    // reflector bc <-> ws
     sharedworker_reflector.load(window, './reflector-bc-ws-client.js', function() {
     });
   }
